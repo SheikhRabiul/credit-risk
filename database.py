@@ -48,6 +48,7 @@ curr.execute("CREATE TABLE `origin_raw` (\
 	`preHarpLoanSequenceNumber`	text,\
 	`yr`	text,\
 	`qr`	text,\
+	`defaulted`	integer,\
 	PRIMARY KEY(`loanSequenceNumber`));")
 
 conn.commit()

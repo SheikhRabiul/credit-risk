@@ -20,7 +20,7 @@ dataset.insert(len(dataset.columns),'defaulted', defaulted)
 
 # seperate the dependent (target) variaable
 X = dataset.iloc[:,0:-1].values
-X_y =dataset.iloc[:,0:-1]
+#X_y =dataset.iloc[:,0:-1]
 X_columns = dataset.iloc[:,0:-1].columns.values
 y = dataset.iloc[:,-1].values
 
@@ -97,7 +97,11 @@ for j in range(0,len(nominal_l)):
     nominal_indexes.append(i)
     print("executing ",nominal_l[j], " i:",i)
     X[:, i] = labelencoder_X.fit_transform(X[:, i])
-    
+
+df_dump_part1 = pd.DataFrame(X, columns=X_columns)
+df_dump_part2 = pd.DataFrame(y, columns=['defaulted'])   
+df_dump = pd.concat([df_dump_part1,df_dump_part2], axis = 1)     
+df_dump.to_csv("data/result_numeric.csv",encoding='utf-8')
 #print(X)
 onehotencoder = OneHotEncoder(categorical_features = nominal_indexes)
 X = onehotencoder.fit_transform(X).toarray()
@@ -113,6 +117,8 @@ y = labelencoder_y.fit_transform(y)
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 X = sc.fit_transform(X)
+
+
 
 # excluding few features those has none or little effect on classification result.
 # This will simplyfy the model (less overfitting)

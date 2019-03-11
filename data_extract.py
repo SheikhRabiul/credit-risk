@@ -15,10 +15,10 @@ import sqlite3
 import time
 
 
-file_name1 = 'data/sample_historical_data1_Q32008.txt'
-file_name2 = 'data/sample_historical_data1_time_Q32008.txt'
+file_name1 = 'data/sample_orig_2008.txt'
+file_name2 = 'data/sample_svcg_2008.txt'
 year = '2008'
-quarter = '3'
+quarter = '1'
 
 conn = sqlite3.connect("database/credit.sqlite")
 curr = conn.cursor()
