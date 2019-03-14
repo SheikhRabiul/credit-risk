@@ -5,7 +5,6 @@ Created on Fri Feb  8 19:39:57 2019
 @author: Sheikh Rabiul Islam
 Purpose: Data extracttion
     extract data from csv file to raw tables
-    clear raw tables before copying data into there
 """
 
 #import modules
@@ -17,13 +16,15 @@ import time
 
 file_name1 = 'data/sample_orig_2008.txt'
 file_name2 = 'data/sample_svcg_2008.txt'
+
+#year and quarter is unimportant when processing one year at a time. 
 year = '2008'
 quarter = '1'
 
 conn = sqlite3.connect("database/credit.sqlite")
 curr = conn.cursor()
 
-#clear tables
+#clear old data from tables
 curr.execute("delete from performance_raw;")
 conn.commit()
 curr.execute("delete from origin_raw;")

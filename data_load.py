@@ -26,7 +26,7 @@ curr.execute("insert into performance(loanSequenceNumber,monthlyReportingPeriod,
 conn.commit()
 
 df_result = pd.read_sql_query("select a.*,b.* from performance a, origin b  where a.loanSequenceNumber=b.loanSequenceNumber;", conn)
-df_result.to_csv("data/result.csv",encoding='utf-8')
+df_result.to_csv("data/data_preprocessed.csv",encoding='utf-8')
 
 curr.close()
 conn.close()

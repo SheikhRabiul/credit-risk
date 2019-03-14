@@ -3,8 +3,7 @@
 Created on Fri Feb  8 19:39:57 2019
 
 @author: Sheikh Rabiul Islam
-Purpose: Data transform
-    clean and transform the extracted data
+Purpose: clean data; sample data (stratified)
 """
 
 #import modules
@@ -18,7 +17,7 @@ curr = conn.cursor()
 
 i=1
 
-
+#################### labeling data ####################
 #label data based on  zeroBalanceCode
 #first for all records set default =0
 if curr.execute("update performance_raw set defaulted = 0;"):
@@ -82,14 +81,14 @@ else:
 i = i +1
 conn.commit()
 
-
+########################## sampling data [stratified] ######################################
 #now data is ready for sampling; comment this part if sampling is not needed;
 dataset = pd.read_sql_query("select * from origin_raw;", conn)
 X = dataset.iloc[:,:].values
 y = dataset.iloc[:,-1].values
 
 from sklearn.model_selection import train_test_split
-X_remaining, X_sampled, y_remaining, y_sampled = train_test_split( X, y, test_size=1000, random_state=42, stratify=y)
+X_remaining, X_sampled, y_remaining, y_sampled = train_test_split( X, y, test_size=3000, random_state=42, stratify=y)
 
 selected_indices = X_sampled[:,19]
 
@@ -114,8 +113,7 @@ i = i +1
 conn.commit()
 
 
-
-
+####################################### taking care of missing values ################################
 
 #check currentLoanDelinquencyStatus, we are assuming this as numerical, if it has value R then convert that into numeric.
 if curr.execute("update  performance_raw set currentLoanDelinquencyStatus = 199 where currentLoanDelinquencyStatus = 'R';"):
@@ -274,41 +272,6 @@ if curr.execute("update performance_raw set estimatedLoandToValue = 0.0 where es
     print(i, " ok")
 else:
     print(i, " failed")
-#update "performance" set `defaulted`=1 where `currentLoanDelinquencyStatus` > 2
-#update "performance" set `defaulted`=0 where `currentLoanDelinquencyStatus` <= 2
-#update  performance set `zeroBalanceCode`=0 where `zeroBalanceCode` is Null
-
-#select a.rowid,a.*, b.* from performance a left join origin b on a.loanSequenceNumber = b.loanSequenceNumber order by a.rowid
-#check currentLoanDelinquencyStatus, we are assuming this as numerical, if it has value R then convert that into numeric.
-##update  performance set currentLoanDelinquencyStatus = 199 where currentLoanDelinquencyStatus = 'R'
-# if NET SALES PROCEEDS = C then it should be replaced by UPB. if it is U , then we cna replace it with null
-##update  performance set netSalesProceeds = currentActualUPB where netSalesProceeds = 'C'
-##update  performance set netSalesProceeds = Null where netSalesProceeds = 'U'
-#originalDebtToIncomeRatio consider replacing 999 
-
-#update performance set repurchaseFlag = 'NA' where repurchaseFlag is NUll
-#update performance set modificationFlag = 'NA' where modificationFlag is NUll
-#update performance set zeroBalanceEffectiveDate = 'NA' where zeroBalanceEffectiveDate is NUll
-#update performance set dueDateOfLastPaidInstallment = 'NA' where dueDateOfLastPaidInstallment is NUll 
-#update origin set metropolitanDivisionOrMSA = 'NA' where metropolitanDivisionOrMSA is NUll 
-#update origin set prepaymentPenaltyMortgageFlag = 'NA' where prepaymentPenaltyMortgageFlag is NUll
-#update origin set postalCode = 'NA' where postalCode is NUll
-#update origin set superConformingFlag = 'NA' where superConformingFlag is NUll
-#update origin set preHarpLoanSequenceNumber = 'NA' where preHarpLoanSequenceNumber is NUll
-#update performance set miRecoveries = 0.00 where miRecoveries is NUll
-#update performance set netSalesProceeds = "NA" where netSalesProceeds is NUll
-#update performance set nonMiRecoveries = 0.00 where nonMiRecoveries is NUll
-
-#update performance set expenses = 0.00 where expenses is NUll
-#update performance set legalCosts = 0.00 where legalCosts is NUll
-#update performance set maintenanceAndPreservationCosts = 0.00 where maintenanceAndPreservationCosts is NUll
-#update performance set taxesAndInsurance = 0.00 where taxesAndInsurance is NUll
-    
-#update performance set miscellaneousExpenses = 0.00 where miscellaneousExpenses is NUll
-#update performance set actualLossCalculation = 0.00 where actualLossCalculation is NUll
-#update performance set modificationCost = 0.00 where modificationCost is NUll
-#update performance set stepModificationFlag = 'NA' where stepModificationFlag is NUll
-#update performance set deferredPaymentModification = 'NA' where deferredPaymentModification is NUll
 
 conn.commit()
 curr.close()

@@ -1,0 +1,4 @@
+data/*
+database/*
+output/*
+__pycache__/*
