@@ -1,9 +1,10 @@
 process_data.py -> preprocess data by running following 4 files
 	data_extract.py -> read the dataset; store it in sqlite database.
 	data_transform.py -> clean data; sample data
-	data_load.py -> move cleaned and sampled data from raw tables to main table. Also write into data/result.csv.
-	data_conversion -> remove unimportant features; labelEncode; onHotEncode;Scale; resample minority class;
+	data_load.py -> move cleaned and sampled data from raw tables to main table. Also write into data/data_preprocessed.csv.
+	data_conversion.py -> remove unimportant features; labelEncode; onHotEncode;Scale; resample minority class;
 		save the fully processed data as numpy array (binary: data/____.npy)
+    data_conversion_alt.py -> also make numerical version of original and resampled data. 
 
 run_classifiers.py
 	classifier_lr.py -> Logistic Regression (LR)
