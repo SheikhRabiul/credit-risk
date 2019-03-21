@@ -1,6 +1,6 @@
 # Author: Sheikh Rabiul Islam
-# Date: 03/14/2019
-# Purpose: Random Forest on fully processed data
+# Date: 03/20/2019
+# Purpose: Extra Trees on fully processed data
 
 #import modules
 import pandas as pd   
@@ -12,15 +12,14 @@ config_file = 'config.txt'
 config = pd.read_csv(config_file,sep=',', index_col =None)
 resample_data = config.iloc[0,1] #0 or 1
 
-print("LR:",resample_data)
+
+print("Extra Trees:",resample_data)
 start = time.time()
 
+from sklearn.ensemble import ExtraTreesClassifier
 
-from sklearn.model_selection import KFold, cross_val_score
 
-## random forest
-from sklearn.linear_model import LogisticRegression
-classifier = LogisticRegression(random_state=0, solver='saga')
+classifier = ExtraTreesClassifier(n_estimators=100, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features='auto', max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None, bootstrap=False, oob_score=False, n_jobs=4, random_state=None, verbose=0, warm_start=False, class_weight=None)
 
 # import processed data
 X_train = np.load('data/data_fully_processed_X_train.npy')
@@ -62,7 +61,7 @@ roc_auc = auc(fpr,tpr) # ROC-AUC
 #precision recall AUC ->PRC
 prc_precision, prc_recall, prc_thresholds = precision_recall_curve(y_test, classifier.predict_proba(X_test)[:,1])
 #prc_auc = auc(prc_precision,prc_recall)
-prc_auc=''
+prc_auc = ''
 df_metrics = pd.DataFrame([[acsc, precision, recall, fscore,roc_auc]], 
                         index=[0],
                         columns=['accuracy','precision', 'recall', 'fscore', 'ROC-AUC'])

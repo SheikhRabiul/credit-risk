@@ -88,7 +88,7 @@ X = dataset.iloc[:,:].values
 y = dataset.iloc[:,-1].values
 
 from sklearn.model_selection import train_test_split
-X_remaining, X_sampled, y_remaining, y_sampled = train_test_split( X, y, test_size=3000, random_state=42, stratify=y)
+X_remaining, X_sampled, y_remaining, y_sampled = train_test_split( X, y, test_size=2000, random_state=42, stratify=y)
 
 selected_indices = X_sampled[:,19]
 

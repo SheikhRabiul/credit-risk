@@ -13,9 +13,21 @@ import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
 
+#configurations
+config_file = 'config.txt'
+config = pd.read_csv(config_file,sep=',', index_col =None)
+resample_data = config.iloc[0,1] #0 or 1
+
+print("GA", resample_data)
+
 #load traning and test set
 file_name_train = os.path.join("data/","data_preprocessed_numerical_train.csv")
 file_name_test = os.path.join("data/","data_preprocessed_numerical_test.csv")
+
+if resample_data == 1:
+    file_name_train = os.path.join("data/","data_preprocessed_numerical_train_res.csv")
+
+
 df_train = pd.read_csv(file_name_train, sep=',')
 df_test = pd.read_csv(file_name_test, sep=',')
 training_size = len(df_train)

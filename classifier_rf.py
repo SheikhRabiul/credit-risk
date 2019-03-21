@@ -8,7 +8,12 @@ import numpy as np
 import time
 
 #configurations
-resample_data = 0   #set 1 to use resampled training set, 0 to use default (imbalanced) training set
+config_file = 'config.txt'
+config = pd.read_csv(config_file,sep=',', index_col =None)
+resample_data = config.iloc[0,1] #0 or 1
+
+print("RF:",resample_data)
+start = time.time()
 
 from sklearn.model_selection import KFold, cross_val_score
 
@@ -55,10 +60,12 @@ roc_auc = auc(fpr,tpr) # ROC-AUC
 
 #precision recall AUC ->PRC
 prc_precision, prc_recall, prc_thresholds = precision_recall_curve(y_test, classifier.predict_proba(X_test)[:,1])
-prc_auc = auc(prc_precision,prc_recall)
-
-df_metrics = pd.DataFrame([[acsc, precision, recall, fscore,roc_auc,prc_auc]], 
+#prc_auc = auc(prc_precision,prc_recall)
+prc_auc = ''
+df_metrics = pd.DataFrame([[acsc, precision, recall, fscore,roc_auc]], 
                         index=[0],
-                        columns=['accuracy','precision', 'recall', 'fscore', 'ROC-AUC','PRC-AUC'])
+                        columns=['accuracy','precision', 'recall', 'fscore', 'ROC-AUC'])
 
 print(df_metrics)
+end = time.time()
+print("Time taken:", end-start)

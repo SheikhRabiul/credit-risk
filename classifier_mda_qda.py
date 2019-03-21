@@ -12,15 +12,14 @@ config_file = 'config.txt'
 config = pd.read_csv(config_file,sep=',', index_col =None)
 resample_data = config.iloc[0,1] #0 or 1
 
-print("LR:",resample_data)
+print("MDA:",resample_data)
 start = time.time()
-
 
 from sklearn.model_selection import KFold, cross_val_score
 
 ## random forest
-from sklearn.linear_model import LogisticRegression
-classifier = LogisticRegression(random_state=0, solver='saga')
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+classifier = QuadraticDiscriminantAnalysis()
 
 # import processed data
 X_train = np.load('data/data_fully_processed_X_train.npy')
@@ -61,8 +60,8 @@ roc_auc = auc(fpr,tpr) # ROC-AUC
 
 #precision recall AUC ->PRC
 prc_precision, prc_recall, prc_thresholds = precision_recall_curve(y_test, classifier.predict_proba(X_test)[:,1])
-#prc_auc = auc(prc_precision,prc_recall)
-prc_auc=''
+
+
 df_metrics = pd.DataFrame([[acsc, precision, recall, fscore,roc_auc]], 
                         index=[0],
                         columns=['accuracy','precision', 'recall', 'fscore', 'ROC-AUC'])
