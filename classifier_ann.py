@@ -57,7 +57,7 @@ classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'si
 # Compiling the ANN
 classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 # Fitting the ANN to the Training set
-classifier.fit(X_train, y_train, batch_size = 1000, epochs = 20, class_weight = {0:1.0,1:100.0})
+classifier.fit(X_train, y_train, batch_size = 1000, epochs = 5, class_weight = {0:1.0,1:100.0})
 # Part 3 - Making predictions and evaluating the model
 # Predicting the Test set results
 y_pred_probab = classifier.predict(X_test)
