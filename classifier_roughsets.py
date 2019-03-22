@@ -131,7 +131,7 @@ for i in range(len(response)):
     else:
         y_pred.append(0)
 
-    
+"""    
 recall = TP/(TP+FN)
 precision = TP/(TP+FP)
 
@@ -151,9 +151,9 @@ df_metrics = pd.DataFrame([[accuracy, precision, recall, f1score]],
 
 print(df_metrics)
 
+"""
 
-
-print("alternative way:")
+#print("alternative way:")
 
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, roc_curve, auc, precision_recall_curve 
 from sklearn.metrics import precision_recall_fscore_support

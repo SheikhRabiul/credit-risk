@@ -1,4 +1,5 @@
 # Author: Sheikh Rabiul Islam
+#template from Deep Learning A-Z, udemy.com
 # Date: 02/22/2019
 # Purpose: ANN
 
@@ -18,8 +19,8 @@ start = time.time()
 #X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.2, random_state =0)
 
 #print('Train: %s | test: %s' % (train_indices, test_indices))      
-X_train = np.load('data/result_numeric_one_hot_encoded_X_train.npy')
-y_train = np.load('data/result_numeric_one_hot_encoded_y_train.npy')
+X_train = np.load('data/data_fully_processed_X_train.npy')
+y_train = np.load('data/data_fully_processed_y_train.npy')
 
 if resample_data == 1:
     X_train = np.load('data/data_fully_processed_X_train_resampled.npy')
@@ -29,66 +30,51 @@ if resample_data == 1:
 #y_train = np.load('data/result_numeric_one_hot_encoded_y_train.npy')
 
 
-X_test = np.load('data/result_numeric_one_hot_encoded_X_test.npy')
-y_test = np.load('data/result_numeric_one_hot_encoded_y_test.npy')
+X_test = np.load('data/data_fully_processed_X_test.npy')
+y_test = np.load('data/data_fully_processed_y_test.npy')
 
 # Importing the Keras libraries and packages
 import keras
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Dropout
-"""
-# Initialising the ANN
-classifier = Sequential()
 
-# Adding the input layer and the first hidden layer
-classifier.add(Dense(units = 123, kernel_initializer = 'uniform', activation = 'relu', input_dim = 244))
-# classifier.add(Dropout(p = 0.1))
 
-# Adding the second hidden layer
-classifier.add(Dense(units = 123, kernel_initializer = 'uniform', activation = 'relu'))
-# classifier.add(Dropout(p = 0.1))
-
-# Adding the output layer
-classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
-
-# Compiling the ANN
-classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
-
-# Fitting the ANN to the Training set
-classifier.fit(X_train, y_train, batch_size = 20, epochs = 5)
-
-# Part 3 - Making predictions and evaluating the model
-
-# Predicting the Test set results
-y_pred = classifier.predict(X_test)
-y_pred = (y_pred > 0.5)
-"""
-# Predicting a single new observation
-"""Predict if the customer with the following informations will leave the bank:
-Geography: France
-Credit Score: 600
-Gender: Male
-Age: 40
-Tenure: 3
-Balance: 60000
-Number of Products: 2
-Has Credit Card: Yes
-Is Active Member: Yes
-Estimated Salary: 50000"""
-#new_prediction = classifier.predict(sc.transform(np.array([[0.0, 0, 600, 1, 40, 3, 60000, 2, 1, 1, 50000]])))
-#new_prediction = (new_prediction > 0.5)
-"""
-# Making the Confusion Matrix
-from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(y_test, y_pred)
-"""
-# Part 4 - Evaluating, Improving and Tuning the ANN
 
 input_dim = X_train.shape[1]
 units = int(input_dim/2)+1
 
+# Initialising the ANN
+classifier = Sequential()
+# Adding the input layer and the first hidden layer
+classifier.add(Dense(units = units, kernel_initializer = 'uniform', activation = 'relu', input_dim = input_dim))
+classifier.add(Dropout(rate = 0.1))
+# Adding the second hidden layer
+classifier.add(Dense(units = units, kernel_initializer = 'uniform', activation = 'relu'))
+classifier.add(Dropout(rate = 0.1))
+# Adding the output layer
+classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+# Compiling the ANN
+classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+# Fitting the ANN to the Training set
+classifier.fit(X_train, y_train, batch_size = 1000, epochs = 20, class_weight = {0:1.0,1:100.0})
+# Part 3 - Making predictions and evaluating the model
+# Predicting the Test set results
+y_pred_probab = classifier.predict(X_test)
 
+y_pred = np.zeros(len(y_test))
+for i in range(len(y_test)):
+    if y_pred_probab[i] > .5:
+        y_pred[i] =1
+        
+
+# Making the Confusion Matrix
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Part 4 - Evaluating, Improving and Tuning the ANN
+
+"""
 # Evaluating the ANN
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import cross_val_score
@@ -101,12 +87,13 @@ def build_classifier():
     classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
     classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
     return classifier
-classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10000, epochs = 10)
+classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10000, epochs = 5)
 
 classifier.fit(X_train, y_train)
 
 # Predicting the Test set results
-y_pred_probab = classifier.predict(X_test)
+y_pred = classifier.predict(X_test)
+y_pred_probab = y_pred
 y_pred = (y_pred_probab > 0.5)
 
 #accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10, n_jobs = -1)
@@ -118,7 +105,7 @@ y_pred = (y_pred_probab > 0.5)
 
 
 """
-
+"""
 # Tuning the ANN
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import GridSearchCV
@@ -139,8 +126,6 @@ parameters = {'batch_size': [10000, 20000],
               'epochs': [10],
               'optimizer': ['adam', 'rmsprop']
               }
-
-
 grid_search = GridSearchCV(estimator = classifier,
                            param_grid = parameters,
                            scoring = 'recall',
@@ -148,7 +133,6 @@ grid_search = GridSearchCV(estimator = classifier,
 grid_search = grid_search.fit(X_train, y_train)
 best_parameters = grid_search.best_params_
 best_accuracy = grid_search.best_score_
-
 """
 
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, roc_curve, auc, precision_recall_curve 

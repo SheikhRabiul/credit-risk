@@ -11,7 +11,7 @@ s = time.time()
 start = time.time()
 exec(open("process_data.py").read())
 end = time.time()
-print("Time taken by process_data.py:", end-start)
+print("\n\nTime taken by process_data.py:", end-start)
 
 start = time.time()
 exec(open("run_classifiers.py").read())
@@ -34,15 +34,17 @@ else:
 config.iloc[0,1] = resample_data
 config.to_csv(config_file,encoding='utf-8',index=False)
 
-
+print("\n\n\n\n\n\n")
+print("*************************Alternative run***************************************")
+print("\n\n\n\n\n\n")
 # another set of run 
 start = time.time()
 exec(open("run_classifiers.py").read())
 end = time.time()
-print("Time taken by run_classifiers.py:", end-start)
+print("\n\nTime taken by run_classifiers.py:", end-start)
 
 
 e = time.time()
-print("Total Time taken by all classifiers.py:", e-s)
+print("\n\nTotal Time taken by all classifiers.py:", e-s)
 
 

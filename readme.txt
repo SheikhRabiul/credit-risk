@@ -9,12 +9,14 @@ process_data.py -> preprocess data by running following 4 files
 run_classifiers.py
 	classifier_lr.py -> Logistic Regression (LR)
 	classifier_dt.py -> Decision Tree (DT)
-		classifier_rf.py -> Random Forest (RF)
-		classifier_et -> Extra Trees (ET)
-	clasifier_mda.py -> Multiple Discriminant Analysis (MDA)
+	classifier_rf.py -> Random Forest (RF)
+	classifier_et -> Extra Trees (ET)
+	classifier_gradient_boosting.py - > Gradient Boosting (GB)
+	classifier_adaboost.py -> Adaboost
+	classifier_nb.py -> Naive Bayes
+	classifier_mda_qda.py -> Multiple Discriminant Analysis (MDA)
 	classifier_svm.py -> Support Vector Machine (SVM)
 	classifier_rough_set.py -> Rough Set (RS)
-	classifier_cbr.py -> Case Based Reasoning (CBR)
 	classifier_ann.py -> Artificial Neural Network (ANN)
 	classifier_ga.py -> Genetic Algorithm (GA)
 	  
