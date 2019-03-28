@@ -1,4 +1,7 @@
-data/*
-database/*
-output/*
-__pycache__/*
+data/
+database/
+output/
+__pycache__/
+roughsets/
+test/
+output/
