@@ -25,6 +25,7 @@ X = dataset.iloc[:,0:-1].values
 X_columns = dataset.iloc[:,0:-1].columns.values
 y = dataset.iloc[:,-1].values
 del(dataset)
+#X_bk = pd.DataFrame(data=X, columns =X_columns ) 
 
 X_cloumns_d = { X_columns[i]:i for i in range(0, len(X_columns)) }
 for i in range(0,len(X_columns)):
@@ -41,9 +42,10 @@ nominal_indexes = []
 for j in range(0,len(nominal_l)):
     i = X_cloumns_d[nominal_l[j]]
     nominal_indexes.append(i)
-    #print("executing ",nominal_l[j], " i:",i)
+    print("executing ",nominal_l[j], " i:",i)
     X[:, i] = labelencoder_X.fit_transform(X[:, i])
     
+print("alright")
 df_dump_part1 = pd.DataFrame(X, columns=X_columns)
 df_dump_part2 = pd.DataFrame(y, columns=['defaulted'])   
 df_dump = pd.concat([df_dump_part1,df_dump_part2], axis = 1)     

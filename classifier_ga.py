@@ -12,22 +12,13 @@ import numpy as np
 import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
+import time
 
-#configurations
-config_file = 'config.txt'
-config = pd.read_csv(config_file,sep=',', index_col =None)
-resample_data = config.iloc[0,1] #0 or 1
-
-print("GA", resample_data)
+start = time.time()
 
 #load traning and test set
 file_name_train = os.path.join("data/","data_preprocessed_numerical_train.csv")
 file_name_test = os.path.join("data/","data_preprocessed_numerical_test.csv")
-
-if resample_data == 1:
-    file_name_train = os.path.join("data/","data_preprocessed_numerical_train_res.csv")
-
-
 df_train = pd.read_csv(file_name_train, sep=',')
 df_test = pd.read_csv(file_name_test, sep=',')
 training_size = len(df_train)
@@ -111,9 +102,13 @@ for i in range(len(selected_features_list)):
         #encoding response variables
         X[:, i] = labelencoder_X.fit_transform(X[:, i])
 # dummy variables
-onehotencoder = OneHotEncoder(categorical_features = nominal_indexes)
-X = onehotencoder.fit_transform(X)
+#onehotencoder = OneHotEncoder(categorical_features = nominal_indexes)
+#X = onehotencoder.fit_transform(X)
 
+X_df = pd.DataFrame(data=X)
+X_df  = pd.get_dummies(X_df, drop_first=True)
+
+X = X_df.values
 
 # Encoding the Dependent Variable
 labelencoder_y = LabelEncoder()
@@ -125,7 +120,7 @@ sc = StandardScaler()
 X = sc.fit_transform(X)
 
 #no shufling to treat first portion as training set. It was shuffled before.
-X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = test_size, shuffle=False, stratify=None)
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = test_size, shuffle= False, stratify=None)
 
 from sklearn.ensemble import RandomForestClassifier
 classifier = RandomForestClassifier(n_estimators=10,criterion="gini")
@@ -166,3 +161,8 @@ df_metrics = pd.DataFrame([[acsc, precision, recall, fscore,roc_auc,prc_auc]],
 print(df_metrics)
 
 
+end = time.time()
+
+print(df_metrics.iloc[0][0],',',df_metrics.iloc[0][1],',',df_metrics.iloc[0][2],',',df_metrics.iloc[0][3],',',df_metrics.iloc[0][4],',',df_cm.iloc[0][0],',',df_cm.iloc[0][1],',',df_cm.iloc[0][2],',',df_cm.iloc[0][3],',', end-start)
+
+print("Time taken:", end-start)

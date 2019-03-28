@@ -20,7 +20,8 @@ from sklearn.model_selection import KFold, cross_val_score
 
 ## random forest
 from sklearn.linear_model import LogisticRegression
-classifier = LogisticRegression(random_state=0, solver='saga')
+#n_jobs = -1 means use all processors.
+classifier = LogisticRegression(random_state=0, solver='saga',n_jobs=4)
 
 # import processed data
 X_train = np.load('data/data_fully_processed_X_train.npy')
@@ -68,5 +69,10 @@ df_metrics = pd.DataFrame([[acsc, precision, recall, fscore,roc_auc]],
                         columns=['accuracy','precision', 'recall', 'fscore', 'ROC-AUC'])
 
 print(df_metrics)
+
+
 end = time.time()
+print(df_metrics.iloc[0][0],',',df_metrics.iloc[0][1],',',df_metrics.iloc[0][2],',',df_metrics.iloc[0][3],',',df_metrics.iloc[0][4],',',df_cm.iloc[0][0],',',df_cm.iloc[0][1],',',df_cm.iloc[0][2],',',df_cm.iloc[0][3],',', end-start)
+
+
 print("Time taken:", end-start)

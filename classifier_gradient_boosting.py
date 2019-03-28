@@ -67,4 +67,7 @@ df_metrics = pd.DataFrame([[acsc, precision, recall, fscore,roc_auc]],
 
 print(df_metrics)
 end = time.time()
+
+print(df_metrics.iloc[0][0],',',df_metrics.iloc[0][1],',',df_metrics.iloc[0][2],',',df_metrics.iloc[0][3],',',df_metrics.iloc[0][4],',',df_cm.iloc[0][0],',',df_cm.iloc[0][1],',',df_cm.iloc[0][2],',',df_cm.iloc[0][3],',', end-start)
+
 print("Time taken:", end-start)

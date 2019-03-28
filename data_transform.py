@@ -178,7 +178,7 @@ else:
     print(i, " failed")
 i = i +1
 #13
-if curr.execute("update origin_raw set postalCode = 'NotA' where postalCode is Null;"):
+if curr.execute("update origin_raw set postalCode = '0' where postalCode is Null;"):
     print(i, " ok")
 else:
     print(i, " failed")
@@ -189,6 +189,21 @@ if curr.execute("update origin_raw set superConformingFlag = 'NotA' where superC
 else:
     print(i, " failed")
 i = i +1
+
+#14_1
+if curr.execute("update origin_raw set firstTimeHomeBuyerFlag = 'NotA' where firstTimeHomeBuyerFlag = '9';"):
+    print(i, " ok")
+else:
+    print(i, " failed")
+i = i +1
+
+if curr.execute("update origin_raw set loanPurpose = 'NotA' where loanPurpose ='9';"):
+    print(i, " ok")
+else:
+    print(i, " failed")
+i = i +1
+
+
 #15
 if curr.execute("update origin_raw set preHarpLoanSequenceNumber = 'NotA' where preHarpLoanSequenceNumber is Null;"):
     print(i, " ok")

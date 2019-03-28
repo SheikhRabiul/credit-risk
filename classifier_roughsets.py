@@ -17,7 +17,7 @@ University of California, School of Information and Computer Science.
 import time
 import json
 from collections import Counter
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as npy
 from scipy.cluster.vq import kmeans2
 import pandas as pd
@@ -173,11 +173,14 @@ precision, recall, fscore, support = precision_recall_fscore_support(y_test, y_p
 #precision recall AUC ->PRC
 #prc_auc = auc(prc_precision,prc_recall)
 prc_auc=''
-df_metrics = pd.DataFrame([[acsc, precision, recall, fscore]], 
+df_metrics = pd.DataFrame([[acsc, precision, recall, fscore,'']], 
                         index=[0],
-                        columns=['accuracy','precision', 'recall', 'fscore'])
+                        columns=['accuracy','precision', 'recall', 'fscore','ROC-AUC'])
 
 print(df_metrics)
 
 end = time.time()
+print(df_metrics.iloc[0][0],',',df_metrics.iloc[0][1],',',df_metrics.iloc[0][2],',',df_metrics.iloc[0][3],',',df_metrics.iloc[0][4],',',df_cm.iloc[0][0],',',df_cm.iloc[0][1],',',df_cm.iloc[0][2],',',df_cm.iloc[0][3],',', end-start)
+
+
 print("Time taken:", end-start)

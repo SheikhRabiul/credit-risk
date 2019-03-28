@@ -14,11 +14,11 @@ import sqlite3
 import time
 
 
-file_name1 = 'data/sample_orig_2002.txt'
-file_name2 = 'data/sample_svcg_2002.txt'
+file_name1 = 'data/sample_orig_1999.txt'
+file_name2 = 'data/sample_svcg_1999.txt'
 
 #year and quarter is unimportant when processing one year at a time. 
-year = '2008'
+year = '2015'
 quarter = '1'
 
 conn = sqlite3.connect("database/credit.sqlite")

@@ -19,7 +19,7 @@ start = time.time()
 from sklearn.ensemble import ExtraTreesClassifier
 
 
-classifier = ExtraTreesClassifier(n_estimators=100, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features='auto', max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None, bootstrap=False, oob_score=False, n_jobs=4, random_state=None, verbose=0, warm_start=False, class_weight=None)
+classifier = ExtraTreesClassifier(n_estimators=100, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features='auto', max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None, bootstrap=False, oob_score=False, random_state=None, verbose=0, warm_start=False, n_jobs=4, class_weight=None)
 
 # import processed data
 X_train = np.load('data/data_fully_processed_X_train.npy')
@@ -68,4 +68,7 @@ df_metrics = pd.DataFrame([[acsc, precision, recall, fscore,roc_auc]],
 
 print(df_metrics)
 end = time.time()
+
+print(df_metrics.iloc[0][0],',',df_metrics.iloc[0][1],',',df_metrics.iloc[0][2],',',df_metrics.iloc[0][3],',',df_metrics.iloc[0][4],',',df_cm.iloc[0][0],',',df_cm.iloc[0][1],',',df_cm.iloc[0][2],',',df_cm.iloc[0][3],',', end-start)
+
 print("Time taken:", end-start)
